@@ -1,56 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
+import React, { useState } from 'react';
+import Items from './features/items/Items.js';
+import Days, { a11yProps } from './features/days/Days.js';
+import { Tabs, Tab } from '@material-ui/core';
 import './App.css';
+import TabPanel from './components/TabPanel';
+import Schedule from './features/schedule/Schedule';
+
 
 function App() {
+  const [ tab, setTab ] = useState("schedule");
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+      <Tabs value={tab} onChange={(event, newValue)=>{
+        console.log('newValue', newValue);
+        setTab(newValue)
+      }}>
+        <Tab label="Schedule" {...a11yProps('schedule')} />
+        <Tab label="Items" {...a11yProps('items')} />
+        <Tab label="Days" {...a11yProps('days')} />
+        
+      </Tabs>
+      <TabPanel value={tab} index={'schedule'}>
+        <Schedule />
+      </TabPanel>
+      <TabPanel value={tab} index={'items'}>
+        <Items />
+      </TabPanel>
+      <TabPanel value={tab} index={'days'}>
+        <Days />
+      </TabPanel>
     </div>
   );
 }
