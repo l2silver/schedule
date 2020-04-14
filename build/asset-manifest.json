@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/l2silver/schedule/static/css/main.0e96c88f.chunk.css",
+    "main.js": "/l2silver/schedule/static/js/main.8bcb26c0.chunk.js",
+    "main.js.map": "/l2silver/schedule/static/js/main.8bcb26c0.chunk.js.map",
+    "runtime-main.js": "/l2silver/schedule/static/js/runtime-main.453d931c.js",
+    "runtime-main.js.map": "/l2silver/schedule/static/js/runtime-main.453d931c.js.map",
+    "static/js/2.cf9c98ec.chunk.js": "/l2silver/schedule/static/js/2.cf9c98ec.chunk.js",
+    "static/js/2.cf9c98ec.chunk.js.map": "/l2silver/schedule/static/js/2.cf9c98ec.chunk.js.map",
+    "index.html": "/l2silver/schedule/index.html",
+    "precache-manifest.f718b93a709f305f3665e47b6aa8d91f.js": "/l2silver/schedule/precache-manifest.f718b93a709f305f3665e47b6aa8d91f.js",
+    "service-worker.js": "/l2silver/schedule/service-worker.js",
+    "static/css/main.0e96c88f.chunk.css.map": "/l2silver/schedule/static/css/main.0e96c88f.chunk.css.map",
+    "static/js/2.cf9c98ec.chunk.js.LICENSE.txt": "/l2silver/schedule/static/js/2.cf9c98ec.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.453d931c.js",
+    "static/js/2.cf9c98ec.chunk.js",
+    "static/css/main.0e96c88f.chunk.css",
+    "static/js/main.8bcb26c0.chunk.js"
+  ]
+}
