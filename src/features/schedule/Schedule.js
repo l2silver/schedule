@@ -49,9 +49,9 @@ export default function Schedule(){
   }
   return <div>
   {
-    slot && <div style={{height: '100%', padding: 100, backgroundColor: slot.item.color}}>
-      <h1>{slot.item.name}</h1>
-      <h3>{`Time Remaining: ${slot.duration - (elapsed - slot.startTime)} minutes`}</h3>
+    slot && <div style={{height: '100%', backgroundColor: slot.item.color}}>
+      <h1 style={{marginTop: 0, fontSize: '7rem', marginBottom: '-5rem'}}>{slot.item.name}</h1>
+      <h2 style={{fontSize: '4rem'}}>{`Time Left: ${slot.duration - (elapsed - slot.startTime)} minutes`}</h2>
     </div>
   }
     <div style={{
