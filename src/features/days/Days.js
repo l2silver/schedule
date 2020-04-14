@@ -8,6 +8,8 @@ import {
 } from './daySlice';
 import TabPanel from '../../components/TabPanel';
 import { selectItems } from '../items/itemSlice';
+import { getOrderedSlotsWithStartTime } from '../../utils';
+import { debounce } from 'lodash';
 export const daysOfWeek = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
 export function a11yProps(index) {
   return {
@@ -49,7 +51,7 @@ export function Day({name}){
   const items = useSelector(selectItems);
   const dispatch = useDispatch();
   const day = days[name];
-  const onChange = (item, del)=>{
+  const onChange = debounce((item, del)=>{
     const nextDay = day.reduce((acc, curr) => {
       if(curr.id === item.id){
         if(!del) acc.push(item);
@@ -63,7 +65,12 @@ export function Day({name}){
       items: nextDay,
     });
     dispatch(action)
-  }
+  }, 500);
+  const orderedSlots = getOrderedSlotsWithStartTime(day, items);
+  const slotsWithStartTime = orderedSlots.reduce((acc, slot)=>{
+    acc[slot.id] = slot;
+    return acc;
+  }, {})
   return <div>
     <h2>{`Set Day - ${name}`}</h2>
     <ul>
@@ -75,13 +82,22 @@ export function Day({name}){
           }),
         }))}>+</Button></li>
         {
-          day.map(item => {
-            return <li key={item.id}>
+          orderedSlots.map(({item, ...slot}) => {
+            const { startTime, duration } = slotsWithStartTime[slot.id];
+            const startHour = (Math.floor(startTime / 60)+7) % 12 + 1;
+            const startMinutes = startTime % 60;
+            const am = ((Math.floor(startTime / 60)+7) + 1) <= 11;
+            const endTime = startTime + duration;
+            const endHour = (Math.floor(endTime / 60)+7) % 12 + 1;
+            const endMinutes = startTime % 60;
+            const pm = ((Math.floor(endTime / 60)+7) + 1) > 11;
+            return <li key={slot.id}>
               <div>
-                <TextField id={`order-${item.id}`} label="Order" value={item.order} type="number" onChange={(event)=>onChange({...item, order: parseInt(event.target.value, 10)})} />
-                <TextField id={`length-${item.id}`} label="Length in Minutes" type="number" value={item.duration} onChange={(event)=>onChange({...item, duration: parseInt(event.target.value, 10)})} />
-                <SelectItem id={item.id} value={item.itemId} onChange={(event)=>onChange({...item, itemId: event.target.value})} />
-                <Button style={{marginLeft: 100}} onClick={()=>onChange(item, true)} color="secondary">Delete</Button>
+                <p>{`${startHour}:${startMinutes < 10 ? `0${startMinutes}`:startMinutes}${am ? 'am' : 'pm'} - ${endHour}:${endMinutes < 10 ? `0${endMinutes}`:endMinutes}${pm ? 'pm' : 'am'}`}</p>
+                <TextField id={`order-${slot.id}`} label="Order" defaultValue={slot.order} type="number" onChange={(event)=>onChange({...slot, order: parseFloat(event.target.value)})} />
+                <TextField id={`length-${slot.id}`} label="Length in Minutes" type="number" defaultValue={slot.duration} onChange={(event)=>onChange({...slot, duration: parseFloat(event.target.value)})} />
+                <SelectItem id={slot.id} value={slot.itemId} onChange={(event)=>onChange({...slot, itemId: event.target.value})} />
+                <Button style={{marginLeft: 100}} onClick={()=>onChange(slot, true)} color="secondary">Delete</Button>
               </div>
             </li>
           })

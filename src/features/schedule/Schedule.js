@@ -4,8 +4,8 @@ import { useSelector } from 'react-redux';
 import { selectItems } from '../items/itemSlice';
 import { daysOfWeek } from '../days/Days';
 import { get } from 'lodash';
+import { getOrderedSlotsWithStartTime } from '../../utils';
 import { Chip } from '@material-ui/core';
-
 let lastSlotId = null;
 
 const soundUrl = 'http://soundbible.com/grab.php?id=2206&type=mp3';
@@ -22,15 +22,7 @@ export default function Schedule(){
   const date = new Date();
   const dayOfWeek = daysOfWeek[date.getDay()];
   const day = days[dayOfWeek];
-  const orderedDays = [...day].sort((a, b)=>{
-    if(a.order > b.order) return 1;
-    if(a.order < b.order) return -1;
-    return 0;
-  });
-  const [daysWithStartTime] = orderedDays.reduce(([acc, prevTime], item)=>{
-    acc.push({ ...item, item: items[item.itemId], startTime: prevTime});
-    return [acc, prevTime + item.duration];
-  }, [[], 0]);
+  const daysWithStartTime = getOrderedSlotsWithStartTime(day, items);
   const elapsed = (date.getHours()  - 8) * 60 + date.getMinutes();
   const slot = daysWithStartTime.find(i => {
     return i.startTime <= elapsed && elapsed < (i.duration + i.startTime)
