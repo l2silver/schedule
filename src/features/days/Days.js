@@ -89,7 +89,7 @@ export function Day({name}){
             const am = ((Math.floor(startTime / 60)+7) + 1) <= 11;
             const endTime = startTime + duration;
             const endHour = (Math.floor(endTime / 60)+7) % 12 + 1;
-            const endMinutes = startTime % 60;
+            const endMinutes = endTime % 60;
             const pm = ((Math.floor(endTime / 60)+7) + 1) > 11;
             return <li key={slot.id}>
               <div>
@@ -113,7 +113,7 @@ function SelectItem({id, value, onChange}){
   const handleOpen = ()=>setOpen(true);
   const handleChange = onChange;
   return <div style={{display: 'inline-block'}}>
-    <InputLabel id={`select-${id}`}>Age</InputLabel>
+    <InputLabel id={`select-${id}`}>Event</InputLabel>
     <Select
         labelId="demo-controlled-open-select-label"
         id="demo-controlled-open-select"
