@@ -84,13 +84,13 @@ export function Day({name}){
         {
           orderedSlots.map(({item, ...slot}) => {
             const { startTime, duration } = slotsWithStartTime[slot.id];
-            const startHour = (Math.floor(startTime / 60)+7) % 12 + 1;
+            const startHour = (Math.floor(startTime / 60)+6) % 12 + 1;
             const startMinutes = startTime % 60;
-            const am = ((Math.floor(startTime / 60)+7) + 1) <= 11;
+            const am = ((Math.floor(startTime / 60)+6) + 1) <= 11;
             const endTime = startTime + duration;
-            const endHour = (Math.floor(endTime / 60)+7) % 12 + 1;
+            const endHour = (Math.floor(endTime / 60)+6) % 12 + 1;
             const endMinutes = endTime % 60;
-            const pm = ((Math.floor(endTime / 60)+7) + 1) > 11;
+            const pm = ((Math.floor(endTime / 60)+6) + 1) > 11;
             return <li key={slot.id}>
               <div>
                 <p>{`${startHour}:${startMinutes < 10 ? `0${startMinutes}`:startMinutes}${am ? 'am' : 'pm'} - ${endHour}:${endMinutes < 10 ? `0${endMinutes}`:endMinutes}${pm ? 'pm' : 'am'}`}</p>

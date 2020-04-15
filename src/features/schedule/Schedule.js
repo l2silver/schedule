@@ -23,7 +23,7 @@ export default function Schedule(){
   const dayOfWeek = daysOfWeek[date.getDay()];
   const day = days[dayOfWeek];
   const daysWithStartTime = getOrderedSlotsWithStartTime(day, items);
-  const elapsed = (date.getHours()  - 8) * 60 + date.getMinutes();
+  const elapsed = (date.getHours()  - 7) * 60 + date.getMinutes();
   const slot = daysWithStartTime.find(i => {
     return i.startTime <= elapsed && elapsed < (i.duration + i.startTime)
   }, null);
