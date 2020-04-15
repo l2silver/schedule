@@ -7,6 +7,7 @@ import uuid from 'uuid/v4';
 import {
   add, selectItems
 } from './itemSlice';
+import { debounce } from 'lodash';
 
 // import styles from './index.module.css';
 
@@ -19,11 +20,11 @@ export default function Items() {
     <div>
       <h1>Add Items</h1>
       <ul>
-        <li onClick={()=>dispatch(add({
+        <li><Button onClick={debounce(()=>dispatch(add({
           name: 'Default Name',
           color: 'blue',
           id: uuid()
-        }))}><Button>+</Button></li>
+        })), 500)}>+</Button></li>
         {
           Object.keys(items).map(id => {
             const item = items[id];
