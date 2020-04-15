@@ -15,22 +15,22 @@ export default function Items() {
   const items = useSelector(selectItems);
   const dispatch = useDispatch();
 
-
   return (
     <div>
       <h1>Add Items</h1>
       <ul>
-        <li><Button onClick={debounce(()=>dispatch(add({
+        <li><Button onClick={()=>dispatch(add({
           name: 'Default Name',
           color: 'blue',
           id: uuid()
-        })), 500)}>+</Button></li>
+        }))}>+</Button></li>
         {
           Object.keys(items).map(id => {
+            const onChange = debounce((event)=>dispatch(add({...item, name: event.target.value})), 500);
             const item = items[id];
             return <li key={id}>
               <div>
-                <TextField id={`name-${id}`} label="Name" value={item.name} onChange={(event)=>dispatch(add({...item, name: event.target.value}))} />
+                <TextField id={`name-${id}`} label="Name" value={item.name} onChange={onChange} />
                 <HuePicker
                   color={ item.color }
                   onChangeComplete={(color)=>dispatch(add({
