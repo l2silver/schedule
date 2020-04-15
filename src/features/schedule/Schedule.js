@@ -57,7 +57,7 @@ export default function Schedule(){
       </div>
       {
         afterSlot && <div style={{width: '30%', backgroundColor: afterSlot.item.color, display: 'inline-block', verticalAlign: 'top'}}>
-        <h1>{afterSlot.item.name}</h1>
+        <h1>{`Next: ${afterSlot.item.name}`}</h1>
         <h2>{`Time: ${afterSlot.duration} minutes`}</h2>
         </div>
       }
