@@ -5,7 +5,7 @@ import { selectItems } from '../items/itemSlice';
 import { daysOfWeek } from '../days/Days';
 import { get } from 'lodash';
 import { getOrderedSlotsWithStartTime } from '../../utils';
-import { Chip } from '@material-ui/core';
+import { Chip, LinearProgress } from '@material-ui/core';
 let lastSlotId = null;
 
 const soundUrl = 'http://soundbible.com/grab.php?id=2206&type=mp3';
@@ -22,11 +22,19 @@ export default function Schedule(){
   const date = new Date();
   const dayOfWeek = daysOfWeek[date.getDay()];
   const day = days[dayOfWeek];
-  const daysWithStartTime = getOrderedSlotsWithStartTime(day, items);
+  const slotsWithStartTime = getOrderedSlotsWithStartTime(day, items);
   const elapsed = (date.getHours()  - 7) * 60 + date.getMinutes();
-  const slot = daysWithStartTime.find(i => {
-    return i.startTime <= elapsed && elapsed < (i.duration + i.startTime)
+  let slotIndex;
+  const slot = slotsWithStartTime.find((s, i) => {
+    slotIndex = i;
+    return s.startTime <= elapsed && elapsed < (s.duration + s.startTime)
   }, null);
+  const minutesLeft = slot.duration - (elapsed - slot.startTime);
+  let afterSlot;
+  
+  if(slot){
+    afterSlot = slotsWithStartTime[slotIndex+1];
+  }
   if(lastSlotId){
     if(slot && slot.id !== lastSlotId){
       audio.play();
@@ -41,9 +49,18 @@ export default function Schedule(){
   }
   return <div>
   {
-    slot && <div style={{height: '100%', backgroundColor: slot.item.color}}>
-      <h1 style={{marginTop: 0, fontSize: '7rem', marginBottom: '-5rem'}}>{slot.item.name}</h1>
-      <h2 style={{fontSize: '4rem'}}>{`Time Left: ${slot.duration - (elapsed - slot.startTime)} minutes`}</h2>
+    slot && <div>
+      <div style={{width: afterSlot ? '70%' : '100%', backgroundColor: slot.item.color, display: 'inline-block'}}>
+        <h1 style={{marginTop: 0, fontSize: '7rem', marginBottom: '-5rem'}}>{slot.item.name}</h1>
+        <h2 style={{marginBottom: -5, fontSize: '4rem'}}>{`Time Left: ${minutesLeft} minutes`}</h2>
+        <div style={{padding: 10}}><LinearProgress variant="determinate" value={Math.floor(100*(slot.duration - minutesLeft)/slot.duration)} /></div>
+      </div>
+      {
+        afterSlot && <div style={{width: '30%', backgroundColor: afterSlot.item.color, display: 'inline-block', verticalAlign: 'top'}}>
+        <h1>{afterSlot.item.name}</h1>
+        <h2>{`Time: ${afterSlot.duration} minutes`}</h2>
+        </div>
+      }
     </div>
   }
     <div style={{
@@ -51,8 +68,8 @@ export default function Schedule(){
       "justify-content": 'center',
     "flex-wrap": 'wrap',
     }}>
-      {daysWithStartTime.map(s => {
-        let color;
+      {slotsWithStartTime.map(s => {
+        let color = s.item.color;
         if(!slot){
           color='secondary'
         } else {
@@ -63,7 +80,7 @@ export default function Schedule(){
             color='secondary'
           }
         }
-        return <Chip color={color} label={get(s, 'item.name')} />
+        return <Chip size="medium" color={color} label={`${s.item.name}-${s.duration}`} />
       })}
     </div>
   </div>
