@@ -26,11 +26,13 @@ export default function Items() {
         }))}>+</Button></li>
         {
           Object.keys(items).map(id => {
-            const onChange = debounce((event)=>dispatch(add({...item, name: event.target.value})), 500);
+            const onChange = debounce((name)=>{
+              dispatch(add({...item, name}))
+            }, 500);
             const item = items[id];
             return <li key={id}>
               <div>
-                <TextField id={`name-${id}`} label="Name" defaultValue={item.name} onChange={onChange} />
+                <TextField id={`name-${id}`} label="Name" defaultValue={item.name} onChange={(event)=>onChange(event.target.value)} />
                 <HuePicker
                   color={ item.color }
                   onChangeComplete={(color)=>dispatch(add({
