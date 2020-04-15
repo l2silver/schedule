@@ -30,7 +30,7 @@ export default function Items() {
             const item = items[id];
             return <li key={id}>
               <div>
-                <TextField id={`name-${id}`} label="Name" value={item.name} onChange={onChange} />
+                <TextField id={`name-${id}`} label="Name" defaultValue={item.name} onChange={onChange} />
                 <HuePicker
                   color={ item.color }
                   onChangeComplete={(color)=>dispatch(add({
