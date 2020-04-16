@@ -29,10 +29,11 @@ export default function Schedule(){
     slotIndex = i;
     return s.startTime <= elapsed && elapsed < (s.duration + s.startTime)
   }, null);
-  const minutesLeft = slot.duration - (elapsed - slot.startTime);
+  let minutesLeft
   let afterSlot;
   
   if(slot){
+    minutesLeft = slot.duration - (elapsed - slot.startTime);
     afterSlot = slotsWithStartTime[slotIndex+1];
   }
   if(lastSlotId){
