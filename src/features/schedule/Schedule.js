@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import { selectDays } from '../days/daySlice';
 import { useSelector } from 'react-redux';
 import { selectItems } from '../items/itemSlice';
-import { daysOfWeek } from '../days/Days';
 import { get } from 'lodash';
 import { getOrderedSlotsWithStartTime } from '../../utils';
 import { Chip, LinearProgress } from '@material-ui/core';
@@ -11,7 +10,7 @@ let lastSlotId = null;
 const soundUrl = 'http://soundbible.com/grab.php?id=2206&type=mp3';
 const audio = new Audio(soundUrl);
 
-export default function Schedule(){
+export default function Schedule({dayOfWeek}){
   let foundSlot = false;
   const days = useSelector(selectDays);
   const items = useSelector(selectItems);
@@ -20,7 +19,6 @@ export default function Schedule(){
     setTime(currentTime+1);
   },1000)
   const date = new Date();
-  const dayOfWeek = daysOfWeek[date.getDay()];
   const day = days[dayOfWeek];
   const slotsWithStartTime = getOrderedSlotsWithStartTime(day, items);
   const elapsed = (date.getHours()  - 7) * 60 + date.getMinutes();
