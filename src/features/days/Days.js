@@ -29,7 +29,7 @@ export default function Days() {
   return (
     <div>
       <h1>Change Days</h1>
-      <Tabs scrollButtons="auto" value={day} onChange={(e, newVal)=>setDay(newVal)} aria-label="simple tabs example">
+      <Tabs variant="scrollable" scrollButtons="on" value={day} onChange={(e, newVal)=>setDay(newVal)} aria-label="simple tabs example">
         {
           dayNames.map(name => {
             return <Tab label={name} {...a11yProps(name)} />
